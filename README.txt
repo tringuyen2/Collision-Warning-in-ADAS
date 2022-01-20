@@ -1,0 +1,11 @@
+cd /d E:\Documents\Project_DL\CollisionWarning
+
+
+- Activate enviroment anaconda
+conda activate yolov4-cpu
+
+- Convert darknet weights to tensorflow model
+python save_model.py --weights ./data/yolov4-tiny.weights --output ./checkpoints/yolov4-tiny-416 --model yolov4 --tiny
+
+- Run yolov4-tiny object tracker
+python object_tracker.py --video ./data/video/test2.mp4 --output ./outputs/test4.avi
