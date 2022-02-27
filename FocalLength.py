@@ -20,10 +20,12 @@ flags.DEFINE_string('weights', './checkpoints/yolov4-tiny-416',
 flags.DEFINE_integer('size', 416, 'resize images to')
 flags.DEFINE_boolean('tiny', True, 'yolo or yolo-tiny')
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-flags.DEFINE_string('image', 'car-test2.jpg', 'path to input image')
-flags.DEFINE_string('output', 'result.png', 'path to output image')
+flags.DEFINE_string('image', 'car-focalLength.png', 'path to input image')
+flags.DEFINE_string('output', 'car-focalLength-result.png', 'path to output image')
 flags.DEFINE_float('iou', 0.45, 'iou threshold')
 flags.DEFINE_float('score', 0.5, 'score threshold')
+flags.DEFINE_float('knownDistanceMet', 10, 'score threshold')
+flags.DEFINE_float('heightObject', 1.6, 'score threshold')
 
 
 def main(_argv):
@@ -91,8 +93,8 @@ def main(_argv):
     x1, y1, x2, y2 = pred_bbox[0][0][0]
 
     # Distance constants
-    KNOWN_DISTANCE = 2.8  # met
-    CAR_HEIGHT = 1.6  # met
+    KNOWN_DISTANCE = FLAGS.knownDistanceMet  # met
+    CAR_HEIGHT = FLAGS.heightObject  # met
 
     focal_length = ((y2-y1) * KNOWN_DISTANCE) / (CAR_HEIGHT)
     # print(f"{y2-y1}, {x2-x1}")
@@ -105,7 +107,7 @@ def main(_argv):
 
     cv2.rectangle(original_image, c1, c2, (255, 0, 0), 3)
 
-    cv2.imwrite(FLAGS.output, original_image)
+    cv2.imwrite(FLAGS.output, cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB))
 
     print(focal_length)
 

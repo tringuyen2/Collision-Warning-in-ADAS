@@ -20,7 +20,7 @@ flags.DEFINE_string('weights', './checkpoints/yolov4-tiny-416',
 flags.DEFINE_integer('size', 416, 'resize images to')
 flags.DEFINE_boolean('tiny', True, 'yolo or yolo-tiny')
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-flags.DEFINE_string('image', 'car-test2.jpg', 'path to input image')
+flags.DEFINE_string('image', 'image-test-distance/6.jpg', 'path to input image')
 flags.DEFINE_string('output', 'result.png', 'path to output image')
 flags.DEFINE_float('iou', 0.45, 'iou threshold')
 flags.DEFINE_float('score', 0.5, 'score threshold')
@@ -104,7 +104,7 @@ def main(_argv):
         i += 1
 
         distance = ((CAR_HEIGHT) * focal_length) / (y2-y1)
-
+        # print(distance)
 
 
         x1 = round(height_image*x1)
@@ -114,9 +114,9 @@ def main(_argv):
         c1, c2 = (y1, x1), (y2, x2)
 
         cv2.rectangle(original_image, c1, c2, (255, 0, 0), 3)
-        cv2.putText(original_image, str(round(distance, 1)) + "m", (int((y1+y2)/2)-30, int((x1+x2)/2)-10), 0, 1.5, (255, 255, 255), 2)
+        cv2.putText(original_image, str(round(distance, 1)) + "m", (int((y1+y2)/2)-30, int((x1+x2)/2)-10), 0, 1.5, (255, 255, 125), 2)
 
-    cv2.imwrite(FLAGS.output, original_image)
+    cv2.imwrite(FLAGS.output, cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB))
 
 
 
